@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const client = ZAFClient.init();
   client.invoke('resize', { width: '100%', height: '300px' });
 
+  let originalCollaborators = [];
+
   client
     .get('ticket')
     .then(function (data) {
@@ -9,10 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('Full Ticket Data:', ticket);
 
       const requester = ticket.requester;
-      const collaborators = ticket.collaborators || [];
+      originalCollaborators = ticket.collaborators || [];
 
       console.log('Requester Data:', requester);
-      console.log('Collaborators Data:', collaborators);
+      console.log('Collaborators Data:', originalCollaborators);
 
       // Set requester avatar, name, and email
       if (requester.avatarUrl) {
@@ -25,14 +27,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Populate collaborators select options
       const ccSelect = document.getElementById('cc-select');
-      if (collaborators.length === 0) {
+      if (originalCollaborators.length === 0) {
         console.log('No collaborators found for this ticket.');
       } else {
-        collaborators.forEach((collaborator) => {
+        originalCollaborators.forEach((collaborator) => {
           console.log('Processing Collaborator:', collaborator);
           const option = document.createElement('option');
           option.value = collaborator.id;
-          option.text = collaborator.name;
+          option.text = collaborator.name || collaborator.email; // Fallback to email if name is not available
           ccSelect.appendChild(option);
         });
       }
@@ -51,6 +53,15 @@ document.addEventListener('DOMContentLoaded', function () {
       client.get('ticket').then(function (data) {
         const ticket = data.ticket;
         const requester = ticket.requester;
+        let updatedCollaborators = originalCollaborators
+          .filter(
+            (collaborator) => collaborator.id !== parseInt(newRequesterId)
+          )
+          .map((collaborator) => collaborator.id);
+
+        if (keepOldRequester) {
+          updatedCollaborators.push(requester.id);
+        }
 
         client
           .request({
@@ -60,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data: JSON.stringify({
               ticket: {
                 requester_id: newRequesterId,
-                ...(keepOldRequester && { collaborator_ids: [requester.id] }),
+                collaborator_ids: updatedCollaborators,
               },
             }),
           })
