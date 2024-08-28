@@ -9,6 +9,7 @@
 label {
   display: block;
   font-weight: bold;
+  padding-bottom: 0.3em;
 }
 
 #requester-info {
