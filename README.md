@@ -3,7 +3,7 @@
 #### An app I built to help quickly swap out the ticket requester for an individual cc'd into a ticket.
 
 <p align="center">
-  <img src="screen.png">
+  <img src="assets/screen.png">
 </p>
 
 ## Description
