@@ -59,6 +59,7 @@ label {
 #requester-info {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 10px; /* Reduced margin to tighten spacing */
 }
 
@@ -73,10 +74,19 @@ label {
 #requester-name {
   font-size: 16px;
   font-weight: bold;
+  white-space: nowrap;
+  overflow: visible; /* Allow full name to display */
+  text-overflow: unset; /* No ellipsis for names */
 }
 
 #requester-email {
-  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: calc(100% - 50px); /* Prevents email overflow */
+  vertical-align: middle;
+  font-size: 12px; /* Optional: Reduce font size */
   color: #bbb;
 }
 

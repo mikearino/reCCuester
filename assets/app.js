@@ -103,11 +103,10 @@ document.addEventListener('DOMContentLoaded', function () {
               }),
             })
             .then(function () {
-              client.invoke(
-                'notify',
-                'Requester updated successfully',
-                'notice'
-              );
+              client.invoke('notify', 'Requester updated successfully!', 'notice');
+
+              // Force reload of the ticket to ensure UI updates
+              client.invoke('ticket.reload');
             })
             .catch(function (error) {
               if (retries > 0) {
@@ -115,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 updateTicket(retries - 1);
               } else {
                 console.error('Failed to update ticket:', error);
-                client.invoke('notify', 'Failed to update requester', 'error');
+                client.invoke('notify', 'Failed to update requester.', 'error');
               }
             });
         }
