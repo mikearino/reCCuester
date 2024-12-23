@@ -72,16 +72,23 @@ document.addEventListener('DOMContentLoaded', function () {
           return;
         }
 
+        // Build the updated collaborators array
         let updatedCollaborators = originalCollaborators
-          .filter((collaborator) => collaborator.id !== newRequesterId)
-          .map((collaborator) => collaborator.id);
+          .filter((collaborator) => collaborator.id !== newRequesterId) // Exclude the new requester from collaborators
+          .map((collaborator) => collaborator.id); // Convert to IDs
 
+        // Add the old requester to collaborators if the checkbox is checked
         if (keepOldRequester) {
           if (!updatedCollaborators.includes(requester.id)) {
             updatedCollaborators.push(requester.id);
           }
         }
 
+        // Debugging logs
+        console.log('New Requester ID:', newRequesterId);
+        console.log('Updated Collaborators:', updatedCollaborators);
+
+        // Function to update the ticket
         function updateTicket(retries = 3) {
           client
             .request({
