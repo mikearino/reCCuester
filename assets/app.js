@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('Requester Data:', requester);
       console.log('Collaborators Data:', originalCollaborators);
 
-      // Ensure DOM elements exist before accessing
       const requesterAvatar = document.getElementById('requester-avatar');
       const requesterName = document.getElementById('requester-name');
       const requesterEmail = document.getElementById('requester-email');
@@ -35,6 +34,18 @@ document.addEventListener('DOMContentLoaded', function () {
       // Populate collaborators select options
       if (originalCollaborators.length === 0) {
         console.log('No collaborators found for this ticket.');
+        const option = document.createElement('option');
+        option.text = 'No collaborators available';
+        option.disabled = true;
+        ccSelect.appendChild(option);
+      } else if (originalCollaborators.length === 1) {
+        // Handle the single collaborator case
+        const collaborator = originalCollaborators[0];
+        console.log('Single Collaborator:', collaborator);
+        const option = document.createElement('option');
+        option.value = collaborator.id;
+        option.text = collaborator.name || collaborator.email || 'Unknown';
+        ccSelect.appendChild(option);
       } else {
         originalCollaborators.forEach((collaborator) => {
           console.log('Processing Collaborator:', collaborator);
