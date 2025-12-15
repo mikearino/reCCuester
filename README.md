@@ -1,4 +1,4 @@
-# Requester Reassigner (ReCCuester)
+# Requester Reassigner (reCCuester)
 
 Requester Reassigner (ReCCuester) is a Zendesk app that allows agents to reassign a ticket’s requester to an existing collaborator while preserving collaboration context.
 
